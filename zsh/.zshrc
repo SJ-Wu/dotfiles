@@ -28,6 +28,7 @@ function yazi() {
   fi
   rm -f -- "$tmp"
 }
+alias y=yazi
 
 # THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"

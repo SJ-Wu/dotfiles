@@ -9,6 +9,7 @@ brew "fzf"               # fuzzy finder, used by yazi + shell keybindings
 brew "gh"                # GitHub CLI
 brew "imagemagick-full"  # image previews (yazi)
 brew "jq"                # JSON processor
+brew "lazygit"           # terminal git UI (see lazygit/)
 brew "neovim"            # editor (see nvim/)
 brew "poppler"           # PDF previews (yazi)
 brew "resvg"             # SVG previews (yazi)

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-Personal dotfiles: Homebrew packages, zsh, [yazi](https://yazi-rs.github.io/) (terminal file manager), and Neovim config. Files under `zsh/`, `nvim/`, and `yazi/` are symlinked into `$HOME` — they are not copied — so an edit here takes effect on next shell/app restart, no install step required for iterating.
+Personal dotfiles: Homebrew packages, zsh, [yazi](https://yazi-rs.github.io/) (terminal file manager), Neovim, and [lazygit](https://github.com/jesseduffield/lazygit) config. Files under `zsh/`, `nvim/`, `yazi/`, and `lazygit/` are symlinked into `$HOME` (or, for lazygit, `~/Library/Application Support`) — they are not copied — so an edit here takes effect on next shell/app restart, no install step required for iterating.
 
 ## Commands
 

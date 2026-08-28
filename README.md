@@ -1,6 +1,6 @@
 # dotfiles
 
-Nick's personal dev environment: Homebrew packages, zsh, [yazi](https://yazi-rs.github.io/), and [Neovim](https://neovim.io/) config.
+Nick's personal dev environment: Homebrew packages, zsh, [yazi](https://yazi-rs.github.io/), [Neovim](https://neovim.io/), and [lazygit](https://github.com/jesseduffield/lazygit) config.
 
 ## Layout
 
@@ -9,6 +9,7 @@ Brewfile      # `brew bundle` package list (CLI tools + casks)
 zsh/          -> ~/.zshrc, ~/.zprofile
 nvim/         -> ~/.config/nvim
 yazi/         -> ~/.config/yazi
+lazygit/      -> ~/Library/Application Support/lazygit/config.yml
 install.sh    # symlinks everything above + runs `brew bundle` + `ya pkg install`
 ```
 

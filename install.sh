@@ -26,6 +26,7 @@ link "zsh/.zshrc"    ".zshrc"
 link "zsh/.zprofile" ".zprofile"
 link "nvim"           ".config/nvim"
 link "yazi"           ".config/yazi"
+link "lazygit/config.yml" "Library/Application Support/lazygit/config.yml"
 
 if command -v brew >/dev/null 2>&1; then
   echo "Installing Brewfile packages..."

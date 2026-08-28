@@ -1,0 +1,9 @@
+{
+  "theme": "dark",
+  "agentPushNotifEnabled": true,
+  "tui": "fullscreen",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  }
+}

@@ -14,13 +14,15 @@ if command -v zoxide >/dev/null 2>&1; then
 fi
 
 # --- yazi -----------------------------------------------------------------
-# Wrap yazi so quitting with `q` `cd`s the shell into the last visited
-# directory (yazi writes it to --cwd-file). Quitting with `Q` still leaves
-# the shell where it started — that's yazi's own default distinction.
-function y() {
+# Shadow the `yazi` command itself so quitting with `q` `cd`s the shell into
+# the last visited directory (yazi writes it to --cwd-file). Quitting with
+# `Q` still leaves the shell where it started — that's yazi's own default
+# distinction. `command yazi` inside bypasses this function to call the
+# real binary, avoiding infinite recursion.
+function yazi() {
   local tmp cwd
   tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-  yazi "$@" --cwd-file="$tmp"
+  command yazi "$@" --cwd-file="$tmp"
   if cwd="$(command cat -- "$tmp")" && [[ -n "$cwd" && "$cwd" != "$PWD" ]]; then
     builtin cd -- "$cwd"
   fi

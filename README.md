@@ -1,0 +1,33 @@
+# dotfiles
+
+Nick's personal dev environment: Homebrew packages, zsh, [yazi](https://yazi-rs.github.io/), and [Neovim](https://neovim.io/) config.
+
+## Layout
+
+```
+Brewfile      # `brew bundle` package list (CLI tools + casks)
+zsh/          -> ~/.zshrc, ~/.zprofile
+nvim/         -> ~/.config/nvim
+yazi/         -> ~/.config/yazi
+install.sh    # symlinks everything above + runs `brew bundle`
+```
+
+## Setup
+
+```sh
+git clone <this-repo> ~/Github/dotfiles
+cd ~/Github/dotfiles
+./install.sh
+```
+
+`install.sh` is idempotent: it backs up any existing real file/directory once
+(`<name>.bak-<timestamp>`) before symlinking, and leaves already-correct
+symlinks alone.
+
+## Updating the Brewfile
+
+After installing/removing packages with `brew`, regenerate it:
+
+```sh
+brew bundle dump --force --describe --file=Brewfile
+```

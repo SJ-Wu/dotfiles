@@ -1,0 +1,5 @@
+# keymap.toml — keybinding overrides, merged on top of yazi's defaults:
+# https://yazi-rs.github.io/docs/configuration/keymap
+#
+# Empty for now — add [[mgr.prepend_keymap]] / [[mgr.append_keymap]] entries
+# here as overrides are needed rather than replacing the whole default set.

@@ -1,0 +1,3 @@
+# theme.toml — visual theme. Leave empty to use yazi's built-in default
+# theme, or drop in a theme from https://yazi-rs.github.io/docs/resources
+# (e.g. via `ya pack`).

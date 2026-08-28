@@ -5,6 +5,7 @@
 # CLI tools
 brew "fd"                # fast find alternative
 brew "ffmpeg-full"       # media transcoding, used by yazi previews
+brew "git-delta"         # syntax-highlighted diffs, used as lazygit's diffRenderer
 brew "fzf"               # fuzzy finder, used by yazi + shell keybindings
 brew "gh"                # GitHub CLI
 brew "imagemagick-full"  # image previews (yazi)

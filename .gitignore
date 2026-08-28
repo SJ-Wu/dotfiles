@@ -1,2 +1,6 @@
 .DS_Store
 *.bak-*
+
+# Fetched by `ya pkg install` from yazi/package.toml — not vendored.
+/yazi/flavors/
+/yazi/plugins/

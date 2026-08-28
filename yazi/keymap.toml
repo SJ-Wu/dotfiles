@@ -1,5 +1,16 @@
 # keymap.toml — keybinding overrides, merged on top of yazi's defaults:
 # https://yazi-rs.github.io/docs/configuration/keymap
-#
-# Empty for now — add [[mgr.prepend_keymap]] / [[mgr.append_keymap]] entries
-# here as overrides are needed rather than replacing the whole default set.
+
+# smart-enter.yazi: `l`/Enter opens the file or enters the directory in one key.
+[[mgr.prepend_keymap]]
+on   = "l"
+run  = "plugin smart-enter"
+desc = "Enter the child directory, or open the file"
+
+# smart-filter.yazi: continuous filtering, auto-enters a unique match, opens
+# a unique file on submit. Bound to `F` so it doesn't collide with the
+# default `f` (single-shot filter).
+[[mgr.prepend_keymap]]
+on   = "F"
+run  = "plugin smart-filter"
+desc = "Smart filter"

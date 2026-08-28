@@ -9,8 +9,12 @@ Brewfile      # `brew bundle` package list (CLI tools + casks)
 zsh/          -> ~/.zshrc, ~/.zprofile
 nvim/         -> ~/.config/nvim
 yazi/         -> ~/.config/yazi
-install.sh    # symlinks everything above + runs `brew bundle`
+install.sh    # symlinks everything above + runs `brew bundle` + `ya pkg install`
 ```
+
+`yazi/flavors/` and `yazi/plugins/` are not committed — they're fetched by
+`ya pkg install` from the lockfile `yazi/package.toml` (managed with
+`ya pkg add <owner>/<repo>[:<pkg>]` / `ya pkg upgrade`).
 
 ## Setup
 

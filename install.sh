@@ -34,4 +34,9 @@ else
   echo "Homebrew not found; skipping brew bundle. Install it from https://brew.sh first." >&2
 fi
 
+if command -v ya >/dev/null 2>&1; then
+  echo "Installing yazi packages (flavors/plugins from yazi/package.toml)..."
+  (cd "$DOTFILES_DIR/yazi" && ya pkg install)
+fi
+
 echo "Done. Restart your shell (or 'exec zsh') to pick up the new config."

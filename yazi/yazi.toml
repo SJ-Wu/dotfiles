@@ -9,3 +9,14 @@ sort_dir_first = true
 [preview]
 max_width = 1200
 max_height = 1200
+
+# git.yazi plugin (see init.lua): show git status as linemode signs.
+[[plugin.prepend_fetchers]]
+url   = "*"
+run   = "git"
+group = "git"
+
+[[plugin.prepend_fetchers]]
+url   = "*/"
+run   = "git"
+group = "git"

@@ -1,3 +1,9 @@
-# theme.toml — visual theme. Leave empty to use yazi's built-in default
-# theme, or drop in a theme from https://yazi-rs.github.io/docs/resources
-# (e.g. via `ya pack`).
+# theme.toml — visual theme.
+#
+# The "tokyo-night" flavor itself lives in flavors/tokyo-night.yazi/
+# (installed + tracked via `ya pkg add`, see package.toml). This just
+# selects it.
+
+[flavor]
+use = "tokyo-night"
+dark = "tokyo-night"

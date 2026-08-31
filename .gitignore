@@ -4,3 +4,6 @@
 # Fetched by `ya pkg install` from yazi/package.toml — not vendored.
 /yazi/flavors/
 /yazi/plugins/
+
+# Karabiner 自己產生的設定備份，不需要版控。
+/karabiner/automatic_backups/

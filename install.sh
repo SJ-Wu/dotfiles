@@ -30,6 +30,7 @@ link "lazygit/config.yml" "Library/Application Support/lazygit/config.yml"
 link "claude/statusline.sh" ".claude/statusline.sh"
 link "claude/settings.json" ".claude/settings.json"
 link "vimrc/.vimrc"         ".vimrc"
+link "karabiner"            ".config/karabiner"
 link "ideavimrc"            ".config/ideavim"
 link "ideavimrc/.ideavimrc" ".ideavimrc"
 

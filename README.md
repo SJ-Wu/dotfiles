@@ -12,6 +12,7 @@ nvim/         -> ~/.config/nvim
 yazi/         -> ~/.config/yazi
 lazygit/      -> ~/Library/Application Support/lazygit/config.yml
 vimrc/        -> ~/.vimrc (system vim; no plugins)
+karabiner/    -> ~/.config/karabiner (Karabiner-Elements)
 ideavimrc/    -> ~/.ideavimrc + ~/.config/ideavim (IdeaVim for IntelliJ/PyCharm)
 install.sh    # symlinks everything above + runs `brew bundle` + `ya pkg install`
 ```

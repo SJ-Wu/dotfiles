@@ -1,6 +1,7 @@
 # dotfiles
 
-Nick's personal dev environment: Homebrew packages, zsh, [yazi](https://yazi-rs.github.io/), [Neovim](https://neovim.io/), and [lazygit](https://github.com/jesseduffield/lazygit) config.
+Nick's personal dev environment: Homebrew packages, zsh, [yazi](https://yazi-rs.github.io/), [Neovim](https://neovim.io/), [lazygit](https://github.com/jesseduffield/lazygit), and
+[IdeaVim](https://plugins.jetbrains.com/plugin/164-ideavim) config.
 
 ## Layout
 
@@ -10,6 +11,7 @@ zsh/          -> ~/.zshrc, ~/.zprofile
 nvim/         -> ~/.config/nvim
 yazi/         -> ~/.config/yazi
 lazygit/      -> ~/Library/Application Support/lazygit/config.yml
+ideavimrc/    -> ~/.ideavimrc + ~/.config/ideavim (IdeaVim for IntelliJ/PyCharm)
 install.sh    # symlinks everything above + runs `brew bundle` + `ya pkg install`
 ```
 

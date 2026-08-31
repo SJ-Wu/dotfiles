@@ -1,0 +1,251 @@
+" ============================================================
+" IdeaVim 主設定檔 (~/.ideavimrc)
+" 所有 JetBrains IDE 共用的設定都放這裡，
+" 檔案最後會依 IDE 自動載入 java / python 專屬設定。
+"
+" IDE 專屬檔位置: ~/.config/ideavim/  (由 dotfiles symlink 過去)
+" 動作名稱可用 :actionlist <關鍵字> 查詢
+" ============================================================
+
+" --------------------------------------------
+" 重新載入設定
+" --------------------------------------------
+" 重新載入主設定檔
+nmap zso :source ~/.ideavimrc<CR>
+" 手動切換到 IntelliJ / Java 設定
+nmap zij :source ~/.config/ideavim/java_ideavimrc<CR>
+" 手動切換到 PyCharm / Python 設定
+nmap zpc :source ~/.config/ideavim/py_ideavimrc<CR>
+
+" --------------------------------------------
+" 基本設定
+" --------------------------------------------
+" 相對行號
+set rnu
+" 游標上下保留幾行內容
+set scrolloff=5
+" 邊打邊搜尋
+set incsearch
+" 搜尋忽略大小寫
+set ignorecase
+" 有大寫時則區分大小寫
+set smartcase
+" 用閃爍取代嗶聲
+set visualbell
+" 用 IDE 自己的 join (會處理註解、字串合併)
+set ideajoin
+" 重構 (rename 等) 時維持 vim 模式，不切回 insert
+set idearefactormode=keep
+
+" --------------------------------------------
+" 外掛 (需先在 IDE 內安裝對應 plugin)
+" --------------------------------------------
+" 括號/引號環繞操作: cs"' ds" ysiw"
+set surround
+" gcc / gc{motion} 註解切換
+Plug 'tpope/vim-commentary'
+" 複製時高亮顯示範圍
+Plug 'machakann/vim-highlightedyank'
+" cx{motion} 交換兩段文字
+set exchange
+" % 可在 if/end、tag 之間跳躍
+set matchit
+" ii / ai 縮排 text object (Python 特別好用)
+Plug 'michaeljsmith/vim-indent-object'
+" 函式引數 text object: cia / daa
+Plug 'vim-scripts/argtextobj.vim'
+" easymotion 跳躍 (需安裝 AceJump + IdeaVim-EasyMotion)
+set easymotion
+
+" --------------------------------------------
+" 模式切換
+" --------------------------------------------
+" Insert 模式: jj 快速退出到 Normal
+imap jj <Esc>
+" 不用 Ex 模式，Q 改成格式化
+map Q gq
+
+" --------------------------------------------
+" 游標移動
+" --------------------------------------------
+" 移到行首 (第一個非空白字元)
+nmap zh ^
+nmap hh ^
+imap zh <Esc>I
+" 移到行尾
+nmap zl $
+nmap ll $
+imap zl <End>
+
+" --------------------------------------------
+" 貼上 (使用 register 0，不會被 d/c 洗掉)
+" --------------------------------------------
+" 貼在游標後 / 前
+nmap ,p "0p
+nmap ,P "0P
+imap z,p <Esc>"0pa
+imap z,P <Esc>"0Pa
+
+" --------------------------------------------
+" 快速選取 / 修改範圍
+" --------------------------------------------
+" 選取 () 內容
+nmap z, vi)
+nmap z) vi)
+" 選取 {} 內容
+nmap z. vi}
+nmap z} vi}
+" 選取 / 修改 tag 內容
+nmap z> vit
+nmap c> cit
+" 選取 "" / '' 內容
+nmap z" vi"
+nmap z' vi'
+" 修改 [] 內容
+nmap zxx ci]
+
+" --------------------------------------------
+" 編輯操作
+" --------------------------------------------
+" Normal 模式的 Backspace 也能刪字元
+nmap <BS> a<BS>
+" 從行首開始改寫整行
+nmap hc ^C
+" 修改整個單字
+nmap zb ciw
+vmap zb <Esc>ciw
+" Insert 模式刪除整行
+imap zd <Esc>dd
+" 重做
+nmap <A-u> :redo<CR>
+" 全選
+imap <C-a> <Esc>ggVG
+nmap <C-a> ggVG
+
+" --------------------------------------------
+" 行操作
+" --------------------------------------------
+" 複製當前行
+map <C-D> :action EditorDuplicateLines<CR>
+imap <C-D> <Esc>:action EditorDuplicateLines<CR>
+" 上下移動行 (移動後自動縮排)
+map <C-A-K> :action MoveLineUp<CR>:action VimAutoIndentLines<CR>
+imap <C-A-K> <Esc>:action MoveLineUp<CR>:action VimAutoIndentLines<CR>
+map <C-A-J> :action MoveLineDown<CR>:action VimAutoIndentLines<CR>
+imap <C-A-J> <Esc>:action MoveLineDown<CR>:action VimAutoIndentLines<CR>
+" 刪除整行
+map <A-D> :action EditorDeleteLine<CR>
+imap <A-D> <Esc>:action EditorDeleteLine<CR>
+
+" --------------------------------------------
+" 縮排
+" --------------------------------------------
+nnoremap <Tab> >>
+nnoremap <S-Tab> <<
+vmap <Tab> >gv
+vmap <S-Tab> <gv
+
+" --------------------------------------------
+" 檔案操作
+" --------------------------------------------
+" 關閉不儲存
+nmap qq ZQ
+" 儲存並關閉
+nmap zq :wq<CR>
+
+" --------------------------------------------
+" IDE 導航
+" --------------------------------------------
+" 上一個 / 下一個游標位置
+nmap zk :action Back<CR>
+imap zk <Esc>:action Back<CR>
+nmap zj :action Forward<CR>
+imap zj <Esc>:action Forward<CR>
+" 跳到下一個錯誤
+nmap zn :action GotoNextError<CR>
+imap zn <Esc>:action GotoNextError<CR>
+" 跳到宣告
+nmap zf :action GotoDeclaration<CR>
+imap zf <Esc>:action GotoDeclaration<CR>
+" 全域搜尋
+map zrt :action SearchEverywhere<CR>
+imap zrt <Esc>:action SearchEverywhere<CR>
+" 檔案結構
+nmap ,m :action FileStructurePopup<CR>
+
+" --------------------------------------------
+" AceJump / 快速跳躍
+" --------------------------------------------
+nmap <Space> :action AceAction<CR>
+nmap <C-\> :action AceTargetAction<CR>
+
+" --------------------------------------------
+" 重構
+" --------------------------------------------
+" 重新命名
+map zrr :action RenameElement<CR>
+" Inline
+map zri :action Inline<CR>
+imap zri <Esc>:action Inline<CR>
+" 提取成欄位 / 參數 / 變數
+map zrf :action IntroduceField<CR>
+imap zrf <Esc>:action IntroduceField<CR>
+map zrp :action IntroduceParameter<CR>
+imap zrp <Esc>:action IntroduceParameter<CR>
+map zrv :action IntroduceVariable<CR>
+vmap zrv <Esc>:action IntroduceVariable<CR>
+imap zrv <Esc>:action IntroduceVariable<CR>
+imap <A-;> <Esc>:action IntroduceVariable<CR>
+nmap <A-;> :action IntroduceVariable<CR>
+" 提取成方法
+vmap zrm :action ExtractMethod<CR>
+vmap M :action ExtractMethod<CR>
+" 移動類別 / 方法
+map zro :action Move<CR>
+imap zro <Esc>:action Move<CR>
+" 修改簽章
+nmap \cs :action ChangeSignature<CR>
+" 用 live template 包住選取範圍
+vmap \s :action SurroundWithLiveTemplate<CR>
+
+" --------------------------------------------
+" 格式化與執行
+" --------------------------------------------
+" 排列 + 格式化 + 重跑
+nmap zra zz:action RearrangeCode<CR>zz:action ReformatCode<CR>zz:action Rerun<CR>
+imap zra <Esc>zz:action RearrangeCode<CR>zz:action ReformatCode<CR>zz:action Rerun<CR>
+" 選擇 / 重跑 / 停止 Run Configuration
+nmap zmc :action ChooseRunConfiguration<CR>
+nmap zmr :action Rerun<CR>
+nmap zms :action Stop<CR>
+
+" --------------------------------------------
+" Git / 版本控制
+" --------------------------------------------
+" Commit
+nmap zgc zz:action CheckinProject<CR>
+
+" --------------------------------------------
+" 產生程式碼 / 複製參照
+" --------------------------------------------
+nmap ,g :action Generate<CR>
+nmap ,c :action NewElementSamePlace<CR>
+nmap <C-A-n> :action NewElementSamePlace<CR>
+" 複製 reference / 絕對路徑
+nmap zcr :action CopyReference<CR>
+nmap zcp :action CopyAbsolutePath<CR>
+
+" --------------------------------------------
+" 顯示
+" --------------------------------------------
+" 切換相對行號
+nmap <A-L> :set rnu!<CR>
+
+" ============================================================
+" 依 IDE 自動載入專屬設定 (&ide 例: "IntelliJ IDEA", "PyCharm")
+" ============================================================
+if &ide =~? 'pycharm'
+  source ~/.config/ideavim/py_ideavimrc
+elseif &ide =~? 'intellij idea'
+  source ~/.config/ideavim/java_ideavimrc
+endif

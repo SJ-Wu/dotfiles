@@ -29,6 +29,8 @@ link "yazi"           ".config/yazi"
 link "lazygit/config.yml" "Library/Application Support/lazygit/config.yml"
 link "claude/statusline.sh" ".claude/statusline.sh"
 link "claude/settings.json" ".claude/settings.json"
+link "ideavimrc"            ".config/ideavim"
+link "ideavimrc/.ideavimrc" ".ideavimrc"
 
 if command -v brew >/dev/null 2>&1; then
   echo "Installing Brewfile packages..."

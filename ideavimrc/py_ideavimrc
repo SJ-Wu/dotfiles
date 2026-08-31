@@ -1,0 +1,49 @@
+" ============================================================
+" IdeaVim - PyCharm / Python 專屬設定
+" 由 ~/.ideavimrc 依 &ide 自動載入，或手動按 zpc 載入。
+" 共用設定請改 ~/.ideavimrc，不要重複寫在這裡。
+" ============================================================
+
+" --------------------------------------------
+" 字串 (Black / Ruff 會正規化成雙引號)
+" --------------------------------------------
+" 修改 "" 內的內容 / 連同引號一起改
+nmap zcc ci"
+nmap zaa ca"
+" 選取字串並提取成參數
+nmap zsp vi":action IntroduceParameter<CR>
+
+" --------------------------------------------
+" self.
+" --------------------------------------------
+imap <A-.> self.
+nmap <A-.> iself.<Esc>
+
+" --------------------------------------------
+" pytest 測試
+" --------------------------------------------
+" 複製當前行後跳到上一個 def test_ 的名稱
+nmap <F1> mby?def test<CR>`bp?def test_<CR>f_la<Esc>
+imap <F1> <Esc>mby?def test<CR>`bp?def test_<CR>f_la<Esc>
+" 跳到 _ 後面 (補測試名稱用)
+nmap <C-l> f_l
+
+" --------------------------------------------
+" if / else / try 相關輔助
+" --------------------------------------------
+" 選取上一個 if 的條件式
+nmap \\zv ?if<CR>wvt:
+" 複製上一個 if 的條件式
+nmap \\yv ?if<CR>wvt:y
+" 把上一個 if 的條件式提取成變數
+nmap \\v ?if<CR>wvt::action IntroduceVariable<CR><Esc>
+" 把 "if x:" 這行轉成 "... else ..." 的形式
+nmap zsi ^df:j$ps else <Esc>Jde
+" 選取整個 try ... finally 區塊
+nmap zvt ?try:<CR>jV/finally:<CR>k
+
+" --------------------------------------------
+" Python 特有動作
+" --------------------------------------------
+" 最佳化 import
+nmap zoi :action OptimizeImports<CR>

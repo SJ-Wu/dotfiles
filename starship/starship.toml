@@ -1,0 +1,149 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# 圖示以 \uXXXX 轉義寫入（純 ASCII，跨機器搬移不怕編碼問題）。
+# 只有 TOML 的 basic string（雙引號 " / """）會解轉義，literal string（單引號）
+# 不會 —— 所以帶圖示的欄位一律用雙引號。
+#
+# 這些碼位落在 Nerd Font 的私有使用區，終端機必須有 Nerd Font 字型才顯示得出來。
+# 本機是 Ghostty + Brewfile 裡的 font-symbols-only-nerd-font：Ghostty 會自動把
+# 主字型缺的字符 fallback 到那份 symbols-only 字型，所以不必整套換成 Nerd Font
+# patch 版。換到不會 fallback 的終端機才需要：
+#   brew install --cask font-fira-code-nerd-font   → 終端機字型改為 FiraCode Nerd Font Mono
+
+
+# ============================================================
+# 提示字元版面
+# ------------------------------------------------------------
+# 注意：一旦自訂 format，只有這裡列出的模組才會顯示。
+# 沒寫進來的模組即使有設定區塊也不會出現（也不會被計算，等於自動停用）。
+# 第一行放資訊，第二行只放 $character，指令輸入區才不會被擠。
+# $jobs 只在有背景工作（Ctrl-Z / &）時才出現，平常不佔版面。
+# ============================================================
+format = """
+[\uf179](bold white) $directory$git_branch$git_state$git_status$java$golang$python$docker_context$kubernetes$jobs$cmd_duration
+$character"""
+
+# add_newline 不設，吃預設的 true：每次提示字元前空一行，指令之間比較好分辨。
+command_timeout = 1000    # 模組偵測逾時 (ms)；外部指令較慢時給足 1 秒，避免資訊閃爍
+
+
+# ============================================================
+# 提示符號
+# ============================================================
+[character]
+success_symbol = "[❯](bold green)"   # 上一個指令成功
+error_symbol = "[❯](bold red)"       # 上一個指令失敗（不必另開 status 模組）
+
+
+# ============================================================
+# 路徑
+# ============================================================
+[directory]
+truncation_length = 3       # 最多顯示 3 層，再深就縮成 …
+truncate_to_repo = true     # 在 git repo 內只顯示 repo 根目錄以下的相對路徑
+style = "bold cyan"
+read_only = " \U000f033e"   # 無寫入權限的目錄顯示鎖頭 (U+F033E)
+
+
+# ============================================================
+# Git
+# ============================================================
+[git_branch]
+symbol = "\uf418 "   # git 分支圖示 (U+F418)
+format = "[$symbol$branch]($style) "   # 預設 "on [$symbol$branch]($style) "
+style = "bold purple"
+
+[git_state]
+# rebase / merge / cherry-pick 進行中會顯示，避免忘記自己卡在中途
+style = "bold yellow"
+
+[git_status]
+# 拿掉預設的中括號，各狀態自己上色、尾端空格當分隔 → main +3 !2 ?1
+# 顏色語意：綠=已 stage、黃=改了沒 stage、藍=新檔案、紅=衝突、紫=stash、青=與遠端差距
+format = '($all_status$ahead_behind)'
+ahead = '[⇡${count}](bold cyan) '                       # 領先遠端幾個 commit → ⇡3
+behind = '[⇣${count}](bold cyan) '                      # 落後遠端幾個 commit → ⇣2
+diverged = '[⇕⇡${ahead_count}⇣${behind_count}](bold cyan) '   # 雙向分歧 → ⇕⇡1⇣2
+conflicted = '[=${count}](bold red) '                   # 衝突未解的檔案數 → =1
+untracked = '[?${count}](bold blue) '                   # 未追蹤的檔案數 → ?1
+modified = '[!${count}](bold yellow) '                  # 已修改未 stage 的檔案數 → !2
+staged = '[+${count}](bold green) '                     # 已 stage 的檔案數 → +3
+stashed = '[\$${count}](bold purple) '                  # stash 筆數 → $2（\$ 是 literal 錢號）
+
+
+# ============================================================
+# 語言版本
+# ------------------------------------------------------------
+# 這些模組預設只在偵測到專案檔時才顯示（例如 pom.xml / go.mod），
+# 所以在家目錄看不到是正常的。
+# ============================================================
+[java]
+# 偵測 pom.xml、build.gradle、*.java 等。
+# 這裡刻意「不」顯示版本號：starship 抓 Java 版本是真的去跑
+# `java -Xinternalversion`，JVM 冷啟動在 macOS 上常要 200-400ms，等於每次在
+# Java repo 按 Enter 都卡那一下（command_timeout 只讓它不閃爍，不會讓它變快）。
+# format 裡沒有 $version 就完全不會執行 java —— 變數是 lazy 求值的。
+# 想看版本號再換成下面這行，並用 `starship timings` 量一下能不能接受：
+#   format = "[$symbol($version )]($style)"
+symbol = "\ue738 "   # Java 官方咖啡杯 logo (U+E738)
+format = "[$symbol]($style)"
+style = "red dim"
+
+[golang]
+# 偵測 go.mod、*.go 等。go 抓版本是 `go version`，很快，可以留著版本號。
+symbol = "\ue627 "   # Go gopher logo (U+E627)
+format = "[$symbol($version )]($style)"
+style = "bold cyan"
+
+[python]
+# venv 啟用時（detect_env_vars 預設含 VIRTUAL_ENV）就算沒有偵測檔也會顯示，
+# 所以 .zshrc 裡 _auto_venv 一切換 venv，這個模組就會跟著亮。
+# venv 狀態直接用 starship 自己的 $virtualenv（VIRTUAL_ENV 的目錄名），不必另
+# 開一個 [env_var] 模組重複印一次 →  3.12 (.venv)
+symbol = "\ue235 "   # Python 雙蛇 logo (U+E235)
+format = '[${symbol}${version}( \($virtualenv\))]($style) '
+style = "bold green"
+
+detect_files = ["pyproject.toml", "uv.lock", ".python-version", "requirements.txt"]
+detect_extensions = []
+python_binary = "python3"
+
+
+# ============================================================
+# 基礎設施環境
+# ============================================================
+[docker_context]
+# 只在 context 不是 default 時顯示，避免佔版面
+symbol = "\uf308 "   # Docker 鯨魚 logo (U+F308)
+format = "[$symbol$context]($style) "
+style = "blue bold"
+
+[kubernetes]
+disabled = false                              # 預設是關的，要手動打開
+symbol = "\U000f10fe "   # Kubernetes 船舵 logo (U+F10FE，補充平面用 \U 八碼)
+format = '[$symbol$context\($namespace\)]($style) '
+style = "bold red"                            # 讓 k8s context 醒目，避免誤操作正式環境
+
+# 進階：依 context 名稱套不同樣式/別名（prod 亮紅、dev 調暗），
+# 比整條紅更精準；pattern 請依實際 context 名稱調整後再打開：
+# [[kubernetes.contexts]]
+# context_pattern = ".*prod.*"
+# style = "bold red"
+# [[kubernetes.contexts]]
+# context_pattern = ".*dev.*"
+# style = "dim green"
+
+
+# ============================================================
+# 執行時間
+# ============================================================
+# 注意：這個模組量的是「你執行的指令」跑多久（mvn / pytest / curl…），
+# 跟上面的 command_timeout 完全無關 —— 那個只管 starship 自己偵測版本用的指令。
+[cmd_duration]
+min_time = 1000              # 超過 1 秒的指令才顯示耗時
+format = "took [$duration](bold yellow) "
+show_milliseconds = false    # 需要毫秒精度再打開（預設 false，一般不需要）
+
+show_notifications = true    # 長指令跑完發桌面通知（可以切去做別的事）
+min_time_to_notify = 30000   # 超過 30 秒才通知，避免每個指令都跳
+notification_timeout = 5000  # 通知顯示 5 秒後自動消失（部分通知服務不理會這個值）

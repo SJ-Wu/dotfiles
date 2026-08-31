@@ -24,6 +24,7 @@ link() {
 
 link "zsh/.zshrc"    ".zshrc"
 link "zsh/.zprofile" ".zprofile"
+link "starship/starship.toml" ".config/starship.toml"
 link "nvim"           ".config/nvim"
 link "yazi"           ".config/yazi"
 link "lazygit/config.yml" "Library/Application Support/lazygit/config.yml"

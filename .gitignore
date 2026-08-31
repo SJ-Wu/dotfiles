@@ -1,5 +1,8 @@
 .DS_Store
 *.bak-*
+# 外部工具改寫被 symlink 的設定檔時留下的備份（例如 Orca 寫 hooks 前
+# 產生的 claude/settings.json.bak）。上面的 *.bak-* 只擋 install.sh 的。
+*.bak
 
 # Fetched by `ya pkg install` from yazi/package.toml — not vendored.
 /yazi/flavors/

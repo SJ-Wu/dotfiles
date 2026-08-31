@@ -2,6 +2,10 @@
 # Regenerate the installed-package list with:
 #   brew bundle dump --force --describe
 
+# Third-party taps. `brew bundle` installs every tap before anything else
+# regardless of position, so this sits at the top for readability, not order.
+tap "stablyai/orca"
+
 # CLI tools
 brew "fd"                # fast find alternative
 brew "ffmpeg-full"       # media transcoding, used by yazi previews
@@ -27,5 +31,6 @@ cask "ghostty"
 cask "heptabase"
 cask "itsycal"
 cask "karabiner-elements"
+cask "stablyai/orca/orca"   # Orca — AI-agent orchestration IDE (stablyai tap)
 cask "snipaste"
 cask "visual-studio-code"

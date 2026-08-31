@@ -6,5 +6,8 @@
   },
   "tui": "fullscreen",
   "theme": "dark",
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "enabledPlugins": {
+    "skill-creator@claude-plugins-official": true
+  }
 }

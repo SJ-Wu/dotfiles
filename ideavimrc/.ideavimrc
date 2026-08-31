@@ -50,12 +50,13 @@ Plug 'machakann/vim-highlightedyank'
 set exchange
 " % 可在 if/end、tag 之間跳躍
 set matchit
-" ii / ai 縮排 text object (Python 特別好用)
-Plug 'michaeljsmith/vim-indent-object'
 " 函式引數 text object: cia / daa
 Plug 'vim-scripts/argtextobj.vim'
-" easymotion 跳躍 (需安裝 AceJump + IdeaVim-EasyMotion)
-set easymotion
+"
+" 以下兩個需要「額外」在 IDE 裝外掛才能開，沒裝就會噴錯導致整份設定中止:
+"   set easymotion                        -> 需 IdeaVim-EasyMotion 外掛
+"   Plug 'michaeljsmith/vim-indent-object' -> 需 IdeaVim-Textobj-Indent 外掛
+" AceJump 跳躍(<Space>)只靠下面的 :action AceAction，不需要 easymotion。
 
 " --------------------------------------------
 " 模式切換

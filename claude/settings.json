@@ -1,9 +1,10 @@
 {
-  "theme": "dark",
-  "agentPushNotifEnabled": true,
-  "tui": "fullscreen",
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
-  }
+  },
+  "tui": "fullscreen",
+  "theme": "dark",
+  "agentPushNotifEnabled": true
 }

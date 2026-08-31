@@ -16,6 +16,7 @@ brew "imagemagick-full"  # image previews (yazi)
 brew "jq"                # JSON processor
 brew "lazygit"           # terminal git UI (see lazygit/)
 brew "neovim"            # editor (see nvim/)
+brew "node"              # Node.js runtime; also where npm and npx come from
 brew "poppler"           # PDF previews (yazi)
 brew "resvg"             # SVG previews (yazi)
 brew "ripgrep"           # fast grep alternative

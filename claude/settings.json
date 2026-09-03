@@ -1,15 +1,5 @@
 {
   "model": "opus",
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh"
-  },
-  "tui": "fullscreen",
-  "theme": "dark",
-  "agentPushNotifEnabled": true,
-  "enabledPlugins": {
-    "skill-creator@claude-plugins-official": true
-  },
   "hooks": {
     "SessionStart": [
       {
@@ -147,5 +137,25 @@
         ]
       }
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
+  "enabledPlugins": {
+    "skill-creator@claude-plugins-official": true,
+    "heptabase@heptabase-cli-skills": true
+  },
+  "extraKnownMarketplaces": {
+    "heptabase-cli-skills": {
+      "source": {
+        "source": "github",
+        "repo": "heptameta/heptabase-cli-skills"
+      },
+      "autoUpdate": true
+    }
+  },
+  "tui": "fullscreen",
+  "theme": "dark",
+  "agentPushNotifEnabled": true
 }

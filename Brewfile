@@ -7,11 +7,13 @@
 tap "stablyai/orca"
 
 # CLI tools
+brew "bun"                # JavaScript runtime and package manager
 brew "fd"                # fast find alternative
 brew "ffmpeg-full"       # media transcoding, used by yazi previews
 brew "git-delta"         # syntax-highlighted diffs, used as lazygit's diffRenderer
 brew "fzf"               # fuzzy finder, used by yazi + shell keybindings
 brew "gh"                # GitHub CLI
+brew "glab"              # GitLab CLI
 brew "imagemagick-full"  # image previews (yazi)
 brew "jq"                # JSON processor
 brew "lazygit"           # terminal git UI (see lazygit/)
@@ -32,6 +34,7 @@ cask "ghostty"
 cask "heptabase"
 cask "itsycal"
 cask "karabiner-elements"
+cask "orbstack"             # OrbStack
 cask "stablyai/orca/orca"   # Orca — AI-agent orchestration IDE (stablyai tap)
 cask "snipaste"
 cask "visual-studio-code"

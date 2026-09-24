@@ -1,0 +1,86 @@
+" ============================================================
+" IdeaVim - WebStorm / JavaScript / TypeScript 專屬設定
+" 由 ~/.ideavimrc 依 &ide 自動載入，或手動按 zws 載入。
+" 共用設定請改 ~/.ideavimrc，不要重複寫在這裡。
+" 鍵位沿用原本的 ws_ideavimrc；動作名稱對過 WebStorm 2026.2 的 plugin.xml。
+" ============================================================
+
+" --------------------------------------------
+" 分號
+" --------------------------------------------
+" 行尾補分號
+nmap z; $a;<Esc>
+imap z; <Esc>$a;
+
+" --------------------------------------------
+" 字串 (這份設定用單引號)
+" --------------------------------------------
+" 修改 '' 內的內容 / 連同引號一起改
+nmap zcc ci'
+nmap zaa ca'
+" 選取字串並提取成參數
+nmap zsp va':action IntroduceParameter<CR>
+" 修改 `` 內的內容 / 連同反引號一起改
+nmap zc` ci`
+nmap za` ca`
+
+" --------------------------------------------
+" this.
+" --------------------------------------------
+imap <A-.> this.
+nmap <A-.> ithis.
+
+" --------------------------------------------
+" 測試
+" --------------------------------------------
+" 往下開一行，把游標到上一個 it( 的內容貼過去，停在單引號名稱上
+nmap <F1> o<Esc>y?it(<CR>Pf'lzz
+imap <F1> <CR><Esc>y?it(<CR>Pf'lzz
+" 跳到測試 / 實作互切
+nmap zgt :action GotoTest<CR>
+" 剪下當前行，貼到往上兩處 beforeEach，並刪掉第二處貼上後的第一個字
+nmap zrs dd?beforeE<CR>Pnp^de
+
+" --------------------------------------------
+" 覆蓋共用設定 (WebStorm 這版不做 Rearrange、不用 Live Template)
+" --------------------------------------------
+" 格式化後重跑
+map zra zz:action ReformatCode<CR>:action Rerun<CR>
+imap zra <Esc>zz:action ReformatCode<CR>:action Rerun<CR>
+" 用 live template 以外的 Surround With
+vmap \s :action SurroundWith<CR>
+" 修改簽章。\\s 在 IdeaVim 是按 \ 再按 s；Visual 的 \s 是上面的 Surround With
+nmap \\s :action ChangeSignature<CR>
+" 游標在方法上也能提取，不必先選取
+nmap zrm :action ExtractMethod<CR>
+
+" --------------------------------------------
+" JSX / 標籤
+" --------------------------------------------
+" 選取 <...> 裡的名稱
+nmap vi> T<vt>
+
+" --------------------------------------------
+" JavaScript / TypeScript 特有動作
+" --------------------------------------------
+" 最佳化 import
+nmap zoi :action OptimizeImports<CR>
+" 實作 / 覆寫方法
+nmap zim :action ImplementMethods<CR>
+nmap zov :action OverrideMethods<CR>
+" 用 Prettier 格式化 / ESLint --fix
+nmap zpf :action ReformatWithPrettierAction<CR>
+nmap zef :action Javascript.Linters.EsLint.Fix<CR>
+" 提取成 type alias
+nmap zty :action TypeScriptExtractTypeAlias<CR>
+vmap zty :action TypeScriptExtractTypeAlias<CR>
+" 把選取的 JSX 提取成 component
+vmap zrc :action ReactExtractComponentAction<CR>
+
+" --------------------------------------------
+" 與舊設定對齊的小差異
+" --------------------------------------------
+" 相對行號 (舊設定大小寫都綁)
+nmap <A-l> :set rnu!<CR>
+" 全選前記住位置
+imap <C-A> <Esc>mjggVG

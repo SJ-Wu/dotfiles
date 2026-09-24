@@ -1,7 +1,7 @@
 " ============================================================
 " IdeaVim 主設定檔 (~/.ideavimrc)
 " 所有 JetBrains IDE 共用的設定都放這裡，
-" 檔案最後會依 IDE 自動載入 java / python 專屬設定。
+" 檔案最後會依 IDE 自動載入 java / python / javascript 專屬設定。
 "
 " IDE 專屬檔位置: ~/.config/ideavim/  (由 dotfiles symlink 過去)
 " 動作名稱可用 :actionlist <關鍵字> 查詢
@@ -16,6 +16,8 @@ nmap zso :source ~/.ideavimrc<CR>
 nmap zij :source ~/.config/ideavim/java_ideavimrc<CR>
 " 手動切換到 PyCharm / Python 設定
 nmap zpc :source ~/.config/ideavim/py_ideavimrc<CR>
+" 手動切換到 WebStorm / JavaScript 設定
+nmap zws :source ~/.config/ideavim/js_ideavimrc<CR>
 
 " --------------------------------------------
 " 基本設定
@@ -243,10 +245,12 @@ nmap zcp :action CopyAbsolutePath<CR>
 nmap <A-L> :set rnu!<CR>
 
 " ============================================================
-" 依 IDE 自動載入專屬設定 (&ide 例: "IntelliJ IDEA", "PyCharm")
+" 依 IDE 自動載入專屬設定 (&ide 例: "IntelliJ IDEA", "PyCharm", "WebStorm")
 " ============================================================
 if &ide =~? 'pycharm'
   source ~/.config/ideavim/py_ideavimrc
 elseif &ide =~? 'intellij idea'
   source ~/.config/ideavim/java_ideavimrc
+elseif &ide =~? 'webstorm'
+  source ~/.config/ideavim/js_ideavimrc
 endif

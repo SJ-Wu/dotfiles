@@ -155,7 +155,8 @@
   },
   "enabledPlugins": {
     "skill-creator@claude-plugins-official": true,
-    "heptabase@heptabase-cli-skills": true
+    "heptabase@heptabase-cli-skills": true,
+    "vercel@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "heptabase-cli-skills": {

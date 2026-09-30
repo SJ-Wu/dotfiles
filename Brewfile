@@ -37,4 +37,5 @@ cask "karabiner-elements"
 cask "orbstack"             # OrbStack
 cask "stablyai/orca/orca"   # Orca — AI-agent orchestration IDE (stablyai tap)
 cask "snipaste"
+cask "thaw"                 # menu bar manager
 cask "visual-studio-code"

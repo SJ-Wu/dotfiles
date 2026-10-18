@@ -23,8 +23,16 @@ install.sh    # symlinks everything above + runs `brew bundle` + `ya pkg install
 
 ## Setup
 
+On a new Mac with [Claude Code](https://code.claude.com/docs/en/setup) installed, one prompt does the whole thing — it follows the "Restoring this environment on a new Mac" steps in `AGENTS.md` (Homebrew, clone, `install.sh`, verify):
+
 ```sh
-git clone <this-repo> ~/Github/dotfiles
+claude "Restore my dev environment from https://github.com/SJ-Wu/dotfiles"
+```
+
+Or by hand:
+
+```sh
+git clone https://github.com/SJ-Wu/dotfiles.git ~/Github/dotfiles
 cd ~/Github/dotfiles
 ./install.sh
 ```

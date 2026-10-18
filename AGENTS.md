@@ -23,6 +23,16 @@ To check a change without touching the real system, symlink into a scratch `$HOM
 HOME=/tmp/dotfiles-test ./install.sh
 ```
 
+## Restoring this environment on a new Mac
+
+The intended entry point is a single prompt to Claude Code on a fresh machine (see README), so an agent may be reading this right after cloning. Do it in this order and report what happened at each step:
+
+1. **Homebrew.** If `command -v brew` fails, install it with the official one-liner from https://brew.sh. The installer asks for the user's macOS password: hand that prompt to the user (they can run the command themselves with Claude Code's `!` prefix) — never try to supply or pipe a password. Afterwards load it into the current shell with `eval "$(/opt/homebrew/bin/brew shellenv)"`; `zsh/.zprofile` takes over from the next login shell.
+2. **Clone.** `git clone https://github.com/SJ-Wu/dotfiles.git ~/Github/dotfiles`, or `git -C ~/Github/dotfiles pull` if it already exists.
+3. **Install.** Run `./install.sh` from the repo root. It is idempotent, so re-running after a failure is safe.
+4. **Verify.** `brew bundle check --file=Brewfile`, then `ls -la` the link targets listed in `install.sh` and confirm each points back into the repo. Report anything missing instead of patching around it.
+5. **Hand back.** An agent's shell cannot replace the user's, so tell the user to run `exec zsh` (or open a new Ghostty window). Also tell them about the steps that need a human: granting Karabiner-Elements its macOS permissions in System Settings, and logging in to `gh` (`gh auth login`).
+
 ## Architecture
 
 - **`install.sh`** is the only thing that ties the repo to the live system. It's a single idempotent symlink step (`link()`  function) mapping repo path -> `$HOME` path, followed by `brew bundle`. Any new dotfile must be added there explicitly — nothing is auto-discovered. It backs up a pre-existing real file/dir once as `<name>.bak-<timestamp>` before linking; an already-correct symlink is left alone.

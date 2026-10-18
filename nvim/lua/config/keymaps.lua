@@ -14,3 +14,7 @@ map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
 map("n", "n", "nzzzv")
 map("n", "N", "Nzzzv")
+
+-- Paste the last *yank*, not the last delete: "0 only records yanks, so a
+-- d/x in between doesn't clobber what you meant to paste.
+map({ "n", "x" }, "<leader>p", '"0p', { desc = "Paste last yank" })

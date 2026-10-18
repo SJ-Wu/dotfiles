@@ -25,6 +25,7 @@ brew "ripgrep"           # fast grep alternative
 brew "sevenzip"          # archive previews/extraction (yazi)
 brew "starship"          # shell prompt (see starship/)
 brew "tmux"              # terminal multiplexer (see tmux/)
+brew "tree-sitter-cli"   # builds nvim-treesitter parsers (see nvim/)
 brew "uv"                # Python package/venv manager
 brew "vhs"               # terminal recordings as code (.tape -> mp4/gif); pulls in ttyd
 brew "yazi"              # terminal file manager (see yazi/)

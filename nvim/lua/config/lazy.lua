@@ -14,4 +14,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup("plugins")
+require("lazy").setup("plugins", {
+  -- Claude Code edits files constantly; don't pop a notice on every change.
+  change_detection = { notify = false },
+})

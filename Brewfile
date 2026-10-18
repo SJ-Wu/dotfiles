@@ -26,10 +26,13 @@ brew "sevenzip"          # archive previews/extraction (yazi)
 brew "starship"          # shell prompt (see starship/)
 brew "tmux"              # terminal multiplexer (see tmux/)
 brew "uv"                # Python package/venv manager
+brew "vhs"               # terminal recordings as code (.tape -> mp4/gif); pulls in ttyd
 brew "yazi"              # terminal file manager (see yazi/)
 brew "zoxide"            # smarter `cd`
 
 # Apps
+cask "font-jetbrains-mono"            # code font for VHS recordings
+cask "font-jetbrains-mono-nerd-font"  # same, with Nerd Font icons (yazi/lazygit in VHS)
 cask "font-symbols-only-nerd-font"
 cask "ghostty"
 cask "heptabase"

@@ -24,6 +24,7 @@ brew "resvg"             # SVG previews (yazi)
 brew "ripgrep"           # fast grep alternative
 brew "sevenzip"          # archive previews/extraction (yazi)
 brew "starship"          # shell prompt (see starship/)
+brew "tmux"              # terminal multiplexer (see tmux/)
 brew "uv"                # Python package/venv manager
 brew "yazi"              # terminal file manager (see yazi/)
 brew "zoxide"            # smarter `cd`

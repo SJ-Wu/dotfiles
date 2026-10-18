@@ -10,6 +10,7 @@ Brewfile      # `brew bundle` package list (CLI tools + casks)
 zsh/          -> ~/.zshrc, ~/.zprofile
 nvim/         -> ~/.config/nvim
 yazi/         -> ~/.config/yazi
+tmux/         -> ~/.config/tmux/tmux.conf
 lazygit/      -> ~/Library/Application Support/lazygit/config.yml
 vimrc/        -> ~/.vimrc (system vim; no plugins)
 karabiner/    -> ~/.config/karabiner (Karabiner-Elements)

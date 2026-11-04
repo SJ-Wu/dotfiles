@@ -10,3 +10,6 @@
 
 # Karabiner 自己產生的設定備份，不需要版控。
 /karabiner/automatic_backups/
+# Herdr 載入 mod 時自動寫入的型別定義檔。
+herdr-app/mods/*/jsconfig.json
+herdr-app/mods/*/*.d.ts

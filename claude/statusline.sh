@@ -120,6 +120,23 @@ seven_part=$(quota_part "7d" "$(jqr '.rate_limits.seven_day.used_percentage')" \
 
 line2="${ctx_part}${SEP}${five_part}${SEP}${seven_part}"
 
+# Cache the quota for other readers (the Herdr `agent-usage` panel). Quota is
+# per account, so whichever session ran last is as good as any. Written via a
+# temp file + mv so a reader never sees half a file; any failure is ignored.
+if [ -n "$(jqr '.rate_limits.five_hour.used_percentage // .rate_limits.seven_day.used_percentage')" ]; then
+  usage_dir="$HOME/.cache/claude-usage"
+  mkdir -p "$usage_dir" 2>/dev/null || true
+  usage_tmp=$(mktemp "$usage_dir/.usage.XXXXXX" 2>/dev/null || true)
+  if [ -n "$usage_tmp" ]; then
+    if jq -c '{five_hour: .rate_limits.five_hour, seven_day: .rate_limits.seven_day, updated_at: (now | floor)}' \
+      <<<"$input" >"$usage_tmp" 2>/dev/null; then
+      mv -f "$usage_tmp" "$usage_dir/usage.json" 2>/dev/null || rm -f "$usage_tmp"
+    else
+      rm -f "$usage_tmp"
+    fi
+  fi
+fi
+
 # --- line 3 (dim): cost | lines +/- | cache | duration | session name ----
 parts=()
 

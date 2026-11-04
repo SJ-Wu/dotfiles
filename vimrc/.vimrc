@@ -45,7 +45,129 @@ set signcolumn=no
 set list
 set listchars=trail:·,nbsp:␣,extends:›,precedes:‹
 set background=dark
-silent! colorscheme habamax
+" 終端機裡的字型由終端機決定 (Herdr / Ghostty 都是 JetBrains Mono)；
+" 這行只在 gvim / MacVim 生效
+if has('gui_running')
+  set guifont=JetBrainsMono\ Nerd\ Font\ Mono:h14,JetBrains\ Mono:h14
+endif
+
+" --------------------------------------------
+" 配色: Tokyo Night (night)
+" --------------------------------------------
+" 跟 nvim (folke/tokyonight.nvim)、tmux、lazygit、Herdr 同一套色票。
+" vim 沒內建 tokyonight，又要維持零外掛，所以直接手寫 highlight。
+" 需要 24-bit 色彩: Ghostty 會設 COLORTERM=truecolor；不支援的終端機
+" (例如 macOS Terminal.app) 退回內建的 habamax。
+function! s:Hi(group, fg, bg, ...) abort
+  let l:attr = a:0 ? a:1 : 'NONE'
+  execute 'highlight' a:group 'guifg=' . a:fg 'guibg=' . a:bg 'gui=' . l:attr 'cterm=' . l:attr
+endfunction
+
+function! s:TokyoNight() abort
+  highlight clear
+  if exists('syntax_on') | syntax reset | endif
+  let g:colors_name = 'tokyonight'
+
+  let l:bg = '#1a1b26' | let l:bg_dark = '#16161e' | let l:bg_hl = '#292e42'
+  let l:black = '#15161e' | let l:fg = '#c0caf5' | let l:fg_dark = '#a9b1d6'
+  let l:gutter = '#3b4261' | let l:dark3 = '#545c7e' | let l:comment = '#565f89'
+  let l:dark5 = '#737aa2' | let l:blue0 = '#3d59a1' | let l:blue = '#7aa2f7'
+  let l:cyan = '#7dcfff' | let l:blue1 = '#2ac3de' | let l:blue5 = '#89ddff'
+  let l:magenta = '#bb9af7' | let l:orange = '#ff9e64' | let l:yellow = '#e0af68'
+  let l:green = '#9ece6a' | let l:green1 = '#73daca' | let l:red = '#f7768e'
+  let l:red1 = '#db4b4b' | let l:visual = '#283457' | let l:N = 'NONE'
+
+  " 編輯區
+  call s:Hi('Normal', l:fg, l:bg)
+  call s:Hi('Cursor', l:bg, l:fg)
+  call s:Hi('CursorLine', l:N, l:bg_hl)
+  call s:Hi('CursorColumn', l:N, l:bg_hl)
+  call s:Hi('ColorColumn', l:N, l:black)
+  call s:Hi('LineNr', l:gutter, l:N)
+  call s:Hi('CursorLineNr', l:orange, l:N, 'bold')
+  call s:Hi('SignColumn', l:gutter, l:bg)
+  call s:Hi('FoldColumn', l:comment, l:bg)
+  call s:Hi('Folded', l:blue, l:gutter)
+  call s:Hi('Visual', l:N, l:visual)
+  call s:Hi('VisualNOS', l:N, l:visual)
+  call s:Hi('Search', l:fg, l:blue0)
+  call s:Hi('IncSearch', l:black, l:orange)
+  call s:Hi('CurSearch', l:black, l:orange)
+  call s:Hi('MatchParen', l:orange, l:N, 'bold')
+  call s:Hi('NonText', l:dark3, l:N)
+  call s:Hi('SpecialKey', l:dark3, l:N)
+  call s:Hi('EndOfBuffer', l:bg, l:N)
+  call s:Hi('Conceal', l:dark5, l:N)
+  call s:Hi('Directory', l:blue, l:N)
+  call s:Hi('Title', l:blue, l:N, 'bold')
+  call s:Hi('QuickFixLine', l:N, l:visual, 'bold')
+  " 視窗框線與狀態列
+  call s:Hi('StatusLine', l:fg_dark, l:bg_dark)
+  call s:Hi('StatusLineNC', l:gutter, l:bg_dark)
+  call s:Hi('StatusLineTerm', l:fg_dark, l:bg_dark)
+  call s:Hi('StatusLineTermNC', l:gutter, l:bg_dark)
+  call s:Hi('VertSplit', l:black, l:N)
+  call s:Hi('TabLine', l:gutter, l:bg_dark)
+  call s:Hi('TabLineSel', l:black, l:blue)
+  call s:Hi('TabLineFill', l:N, l:black)
+  call s:Hi('WildMenu', l:N, l:visual)
+  call s:Hi('Pmenu', l:fg, l:bg_dark)
+  call s:Hi('PmenuSel', l:N, '#343a55')
+  call s:Hi('PmenuSbar', l:N, '#1f2231')
+  call s:Hi('PmenuThumb', l:N, l:gutter)
+  " 訊息
+  call s:Hi('ErrorMsg', l:red1, l:N)
+  call s:Hi('WarningMsg', l:yellow, l:N)
+  call s:Hi('ModeMsg', l:fg_dark, l:N, 'bold')
+  call s:Hi('MoreMsg', l:blue, l:N)
+  call s:Hi('Question', l:blue, l:N)
+  " diff 與拼字
+  call s:Hi('DiffAdd', l:N, '#20303b')
+  call s:Hi('DiffChange', l:N, '#1f2231')
+  call s:Hi('DiffDelete', l:N, '#37222c')
+  call s:Hi('DiffText', l:N, '#394b70')
+  execute 'highlight SpellBad gui=undercurl cterm=underline guisp=' . l:red1
+  execute 'highlight SpellCap gui=undercurl cterm=underline guisp=' . l:yellow
+  execute 'highlight SpellRare gui=undercurl cterm=underline guisp=' . l:blue1
+  execute 'highlight SpellLocal gui=undercurl cterm=underline guisp=' . l:green1
+  " 語法
+  call s:Hi('Comment', l:comment, l:N, 'italic')
+  call s:Hi('Constant', l:orange, l:N)
+  call s:Hi('String', l:green, l:N)
+  call s:Hi('Character', l:green, l:N)
+  call s:Hi('Number', l:orange, l:N)
+  call s:Hi('Boolean', l:orange, l:N)
+  call s:Hi('Float', l:orange, l:N)
+  call s:Hi('Identifier', l:magenta, l:N)
+  call s:Hi('Function', l:blue, l:N)
+  call s:Hi('Statement', l:magenta, l:N)
+  call s:Hi('Conditional', l:cyan, l:N)
+  call s:Hi('Repeat', l:cyan, l:N)
+  call s:Hi('Label', l:blue, l:N)
+  call s:Hi('Operator', l:blue5, l:N)
+  call s:Hi('Keyword', l:cyan, l:N, 'italic')
+  call s:Hi('Exception', l:magenta, l:N)
+  call s:Hi('PreProc', l:cyan, l:N)
+  call s:Hi('Type', l:blue1, l:N)
+  call s:Hi('Special', l:blue1, l:N)
+  call s:Hi('Delimiter', l:blue5, l:N)
+  call s:Hi('Underlined', l:N, l:N, 'underline')
+  call s:Hi('Error', l:red1, l:N)
+  call s:Hi('Todo', l:bg, l:yellow)
+  call s:Hi('Added', l:green, l:N)
+  call s:Hi('Changed', l:blue, l:N)
+  call s:Hi('Removed', l:red, l:N)
+endfunction
+
+if has('termguicolors') && $COLORTERM =~# '^\(truecolor\|24bit\)$'
+  " tmux 裡 TERM 是 tmux-256color，vim 不會自己補 24-bit 色彩的控制碼
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+  call s:TokyoNight()
+else
+  silent! colorscheme habamax
+endif
 
 " --------------------------------------------
 " 搜尋

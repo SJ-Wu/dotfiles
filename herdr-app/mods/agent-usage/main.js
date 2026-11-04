@@ -3,7 +3,7 @@
 //   in the dotfiles repo every time a Claude Code status line renders.
 // Codex: the last `rate_limits` in its newest session logs
 //   (~/.codex/sessions/YYYY/MM/DD/*.jsonl); Codex writes one per turn.
-import { View, div } from "gpui-kit";
+import { View, div, PathBuilder } from "gpui-kit";
 import { v_flex, h_flex } from "gpui-base";
 import { exec, home, readTextFile, watchFolder, theme } from "herdr";
 
@@ -20,20 +20,13 @@ const WEEKDAYS = ["日", "一", "二", "三", "四", "五", "六"];
 
 const pad = (n) => String(n).padStart(2, "0");
 
-function ago(sec) {
-  if (sec < 60) return "剛剛";
-  if (sec < 3600) return `${Math.floor(sec / 60)} 分鐘前`;
-  if (sec < 86400) return `${Math.floor(sec / 3600)} 小時前`;
-  return `${Math.floor(sec / 86400)} 天前`;
-}
-
 function resetLabel(epoch, now, withDate) {
   if (!epoch) return "";
   if (epoch <= now) return "已重置";
   const d = new Date(epoch * 1000);
   const hm = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
   return withDate
-    ? `${d.getMonth() + 1}/${d.getDate()} 週${WEEKDAYS[d.getDay()]} ${hm} 重置`
+    ? `${d.getMonth() + 1}/${d.getDate()} 週${WEEKDAYS[d.getDay()]}`
     : `${hm} 重置`;
 }
 
@@ -121,56 +114,68 @@ export default class AgentUsage extends View {
     }
   }
 
-  row(t, now, w) {
-    const known = typeof w.used === "number";
+  // A progress ring: a full track, then the remaining share drawn clockwise
+  // from 12 o'clock. Paths are in px relative to the ring's own box.
+  ring(t, frac, color, label) {
+    const S = 58, W = 5, c = S / 2, r = (S - W) / 2;
+    const layer = (path, col) => window.paint_path(path, col).absolute().top(0).left(0).size_full();
+    const circle = () =>
+      PathBuilder.stroke(W).move_to(c, c - r).arc_to(r, r, 0, false, true, c, c + r).arc_to(r, r, 0, false, true, c, c - r).build();
+    const arc = () => {
+      if (frac >= 0.999) return circle();
+      const a = frac * 2 * Math.PI;
+      return PathBuilder.stroke(W)
+        .move_to(c, c - r)
+        .arc_to(r, r, 0, frac > 0.5, true, c + r * Math.sin(a), c - r * Math.cos(a))
+        .build();
+    };
+    return div()
+      .relative()
+      .size(S)
+      .flex_none()
+      .child(layer(circle(), t.border))
+      .when(frac > 0.005, (el) => el.child(layer(arc(), color)))
+      .child(
+        div()
+          .absolute()
+          .top(0)
+          .left(0)
+          .size_full()
+          .flex()
+          .items_center()
+          .justify_center()
+          .text_size(12.5)
+          .font_semibold()
+          .text_color(color)
+          .child(label)
+      );
+  }
+
+  gauge(t, now, key, title, w) {
+    const known = typeof w?.used === "number";
     // A window whose reset time has passed is fresh again, even if nothing
     // has refreshed the data since.
     const left = !known ? null : w.resets && w.resets <= now ? 100 : Math.max(0, Math.min(100, 100 - w.used));
     const color = left == null ? t.dim : left >= 50 ? t.ansi2 : left >= 20 ? t.ansi3 : t.ansi1;
-
     return v_flex()
-      .gap(4)
-      .child(
-        h_flex()
-          .justify_between()
-          .items_center()
-          .child(div().text_size(12.5).text_color(t.foreground).child(w.label))
-          .child(
-            div()
-              .text_size(12.5)
-              .font_semibold()
-              .text_color(color)
-              .child(left == null ? "—" : `剩 ${Math.round(left)}%`)
-          )
-      )
-      .child(
-        div()
-          .h(4)
-          .w_full()
-          .rounded(2)
-          .bg(t.border)
-          .child(div().h(4).rounded(2).bg(color).w(`${left ?? 0}%`))
-      )
-      .child(div().text_size(11).text_color(t.dim).child(resetLabel(w.resets, now, w.long)));
-  }
-
-  section(t, now, title, data, empty) {
-    const head = h_flex()
-      .justify_between()
+      .id(key)
+      .flex_1()
+      .min_w(0)
       .items_center()
-      .child(div().text_size(11.5).font_medium().text_color(t.muted).child(title))
-      .when(Boolean(data?.updated), (el) =>
-        el.child(div().text_size(10.5).text_color(t.dim).child(ago(Math.max(0, now - data.updated))))
-      );
-    const body = !data || data.windows.length === 0
-      ? div().text_size(11.5).text_color(t.dim).child(empty)
-      : v_flex().gap(10).children(data.windows.map((w) => this.row(t, now, w)));
-    return v_flex().gap(8).child(head).child(body);
+      .gap(4)
+      .child(this.ring(t, (left ?? 0) / 100, color, left == null ? "—" : `${Math.round(left)}%`))
+      .child(div().text_size(11.5).text_color(t.foreground).whitespace_nowrap().child(title))
+      .child(div().text_size(10).text_color(t.dim).whitespace_nowrap().child(w ? resetLabel(w.resets, now, w.long) : "沒有資料"));
   }
 
   render(_cx) {
     const t = theme();
     const now = Math.floor(Date.now() / 1000);
+    const cl = this.claude?.windows ?? [];
+    const cx5 = cl.find((w) => !w.long);
+    const cxw = cl.find((w) => w.long);
+    // Codex: its longest window (the weekly one on every plan seen so far).
+    const co = (this.codex?.windows ?? []).slice(-1)[0];
 
     return v_flex()
       .size_full()
@@ -189,16 +194,13 @@ export default class AgentUsage extends View {
           .child(div().text_size(11.5).font_medium().text_color(t.dim).child("用量"))
       )
       .child(
-        v_flex()
-          .id("usage-body")
-          .flex_1()
-          .min_h(0)
-          .px(16)
-          .pb(10)
-          .gap(14)
-          .overflow_y_scrollbar()
-          .child(this.section(t, now, "Claude", this.claude, "開一個 Claude Code session 就會出現"))
-          .child(this.section(t, now, "Codex", this.codex, "跑過一輪 Codex 就會出現"))
+        h_flex()
+          .px(10)
+          .pt(4)
+          .items_start()
+          .child(this.gauge(t, now, "g-c5", "Claude 5h", cx5))
+          .child(this.gauge(t, now, "g-cw", "Claude 週", cxw))
+          .child(this.gauge(t, now, "g-xw", co && !co.long ? `Codex ${co.label}` : "Codex 週", co))
       );
   }
 }

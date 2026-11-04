@@ -51,7 +51,7 @@
               "id": "agent-usage",
               "type": "block",
               "size": {
-                "px": 300
+                "px": 150
               },
               "content": {
                 "mod": "agent-usage"

@@ -1,0 +1,10 @@
+{
+  "zoom": 1.0,
+  "sounds": {
+    "enabled": true
+  },
+  "font_size": 12.0,
+  "minimum_contrast": 1.0,
+  "appearance": "dark",
+  "theme": "tokyo-night"
+}

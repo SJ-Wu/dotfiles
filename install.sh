@@ -35,6 +35,8 @@ link "vimrc/.vimrc"         ".vimrc"
 link "karabiner"            ".config/karabiner"
 link "ideavimrc"            ".config/ideavim"
 link "ideavimrc/.ideavimrc" ".ideavimrc"
+link "herdr-app/settings.json"            ".config/herdr-app/settings.json"
+link "herdr-app/themes/tokyo-night.json" ".config/herdr-app/themes/tokyo-night.json"
 
 if command -v brew >/dev/null 2>&1; then
   echo "Installing Brewfile packages..."

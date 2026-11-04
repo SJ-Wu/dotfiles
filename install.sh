@@ -39,6 +39,8 @@ link "herdr-app/settings.json"            ".config/herdr-app/settings.json"
 link "herdr-app/themes/tokyo-night.json" ".config/herdr-app/themes/tokyo-night.json"
 link "herdr-app/layouts/mine.json"        ".config/herdr-app/layouts/mine.json"
 link "herdr-app/mods/agent-usage"        ".config/herdr-app/mods/agent-usage"
+link "herdr-app/mods/open-link"          ".config/herdr-app/mods/open-link"
+link "herdr-app/keys.json"               ".config/herdr-app/keys.json"
 
 if command -v brew >/dev/null 2>&1; then
   echo "Installing Brewfile packages..."

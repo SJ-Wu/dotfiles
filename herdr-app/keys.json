@@ -57,7 +57,8 @@
     "ctrl-7": "space.select:7",
     "ctrl-8": "space.select:8",
     "ctrl-9": "space.select:9",
-    "cmd-shift-o": "mod.open:open-link"
+    "cmd-shift-o": "mod.open:open-link",
+    "cmd-shift-k": "mod.open:kanban"
   },
   "terminal": {
     "cmd-c": "terminal.copy",
